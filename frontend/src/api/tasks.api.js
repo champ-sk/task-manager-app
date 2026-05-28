@@ -1,0 +1,11 @@
+import api from "./axios";
+
+export const tasksApi = {
+  getAll: (params) => api.get("/tasks", { params }),
+  getById: (id) => api.get(`/tasks/${id}`),
+  create: (data) => api.post("/tasks", data),
+  update: (id, data) => api.put(`/tasks/${id}`, data),
+  toggle: (id) => api.patch(`/tasks/${id}/toggle`),
+  delete: (id) => api.delete(`/tasks/${id}`),
+  getStats: () => api.get("/tasks/stats"),
+};
