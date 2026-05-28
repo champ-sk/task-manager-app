@@ -1,15 +1,45 @@
 # TaskFlow API
+A production‑grade full‑stack Task Management Web Application built with React.js, Node.js + Express, and MongoDB Atlas. Features JWT authentication, real‑time filters, pagination, dark/light mode, Docker support, and secure deployment on Render + Vercel.
 
-TaskFlow is a task management REST API built with **Node.js + Express**.  
-It provides user authentication, task management, and interactive API documentation via Swagger.
+✨ Features
+Frontend
+🔐 JWT‑based login & registration with form validation
 
----
+📊 Dashboard with live stats, completion ring, priority breakdown
+
+✅ Create, edit, delete, and toggle tasks
+
+🔍 Search, filter (status/priority), sort, and paginate tasks
+
+🏷️ Tags, due dates, priority levels per task
+
+🌙 Dark / Light mode toggle (persisted)
+
+📱 Fully responsive (mobile + desktop)
+
+⚡ Optimistic UX with React Query caching
+
+Backend
+🔑 JWT access + refresh token authentication
+
+🛡️ Protected routes with role‑based access (user / admin)
+
+📦 Full CRUD for tasks with ownership enforcement
+
+🔎 Search (regex), filter, sort, paginate via query params
+
+📈 Task stats aggregation endpoint
+
+🚦 Rate limiting, Helmet security, CORS
+
+✅ Input validation with express‑validator
+
+🧪 Unit tests with Jest + Supertest
 
 ## 🚀 Features Implemented
 - Express server setup with middleware (Helmet, CORS, Morgan, Rate Limiting).
 - Health check endpoint (`/health`).
 - MongoDB connection utility (`config/db.js`).
-- Swagger documentation available at `/api/docs`.
 - User model with password hashing and role support.
 - Task model with validation, indexes, and user association.
 - Utility helpers:
@@ -32,31 +62,29 @@ It provides user authentication, task management, and interactive API documentat
 ---
 
 ## 📂 Project Structure
-backend/
-├── app.js              # Express app configuration
-├── server.js           # Server entry point
-├── config/
-│     ├── db.js         # MongoDB connection
-│     └── swagger.js    # Swagger setup
-├── models/
-│     ├── User.js       # User schema
-│     └── Task.js       # Task schema
-├── utils/
-│     ├── jwt.js        # JWT utilities
-│     └── apiResponse.js# Standardized API responses
-├── middleware/
-│     ├── auth.js       # Auth & role-based protection
-│     ├── errorHandler.js# Global error handler
-│     ├── notFound.js   # 404 handler
-│     └── validate.js   # Request validation
-├── controllers/
-│     ├── auth.controller.js # Auth controller
-│     ├── task.controller.js # Task controller
-│     └── user.controller.js # User controller
-├── routes/
-│     ├── auth.routes.js # Auth routes
-│     ├── task.routes.js # Task routes
-│     └── user.routes.js # User routes
+TASKMANAGER26052026
+├── backend/
+│   ├── config/          # DB connection
+│   ├── controllers/     # auth, task, user controllers
+│   ├── middleware/      # auth guard, error handler, validator
+│   ├── models/          # User, Task Mongoose schemas
+│   ├── routes/          # auth, task, user routes
+│   ├── tests/           # Jest + Supertest unit tests
+│   ├── utils/           # JWT helpers, ApiResponse class
+│   ├── app.js           # Express app setup
+│   └── server.js        # Entry point
+├── frontend/
+│   ├── public/
+│   └── src/
+│       ├── api/         # Axios instance + API modules
+│       ├── components/  # Reusable UI, layout, task, auth components
+│       ├── context/     # AuthContext, ThemeContext
+│       ├── hooks/       # useTasks, useForm custom hooks
+│       ├── pages/       # Dashboard, Tasks, Login, Register, Profile
+│       └── utils/       # Date formatting helpers
+|
+└── README.md
+
 ---
 
 ## ⚙️ Installation & Setup
@@ -68,7 +96,7 @@ backend/
 3. Create a .env file in the root with:
    PORT=5000
    NODE_ENV=development
-   MONGO_URI=mongodb://localhost:27017/taskflow
+   MONGO_URI=mongodb://localhost:27017/taskflow(used the live one here)
    CLIENT_URL=http://localhost:3000
    RATE_LIMIT_WINDOW_MS=900000
    RATE_LIMIT_MAX=100
