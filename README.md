@@ -20,11 +20,18 @@ It provides user authentication, task management, and interactive API documentat
   - **ErrorHandler (`middleware/errorHandler.js`)** → centralized error handling.
   - **NotFound (`middleware/notFound.js`)** → handles undefined routes.
   - **Validate (`middleware/validate.js`)** → handles request validation errors.
+- Controllers:
+  - **Auth (`controllers/auth.controller.js`)** → register, login, refresh token, logout, and get profile.
+  - **Task (`controllers/task.controller.js`)** → CRUD operations, status toggle, and stats aggregation.
+  - **User (`controllers/user.controller.js`)** → profile update, password change, and admin user listing.
+- Routes:
+  - **Auth (`routes/auth.routes.js`)** → endpoints for register, login, refresh, logout, and profile.
+  - **Task (`routes/task.routes.js`)** → endpoints for task CRUD, toggle, and stats.
+  - **User (`routes/user.routes.js`)** → endpoints for profile update, password change, and admin listing.
 
 ---
 
 ## 📂 Project Structure
-
 backend/
 ├── app.js              # Express app configuration
 ├── server.js           # Server entry point
@@ -42,8 +49,14 @@ backend/
 │     ├── errorHandler.js# Global error handler
 │     ├── notFound.js   # 404 handler
 │     └── validate.js   # Request validation
-├── routes/             # API routes (auth, tasks, users)
-
+├── controllers/
+│     ├── auth.controller.js # Auth controller
+│     ├── task.controller.js # Task controller
+│     └── user.controller.js # User controller
+├── routes/
+│     ├── auth.routes.js # Auth routes
+│     ├── task.routes.js # Task routes
+│     └── user.routes.js # User routes
 ---
 
 ## ⚙️ Installation & Setup
