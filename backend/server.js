@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 5000;
 // Function to start the server
 const startServer = async () => {
   // Connect to the database before starting the server
+  console.log("connectDB is:", connectDB);
+
   await connectDB();
 
   // Start the Express server
