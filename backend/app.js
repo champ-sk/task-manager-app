@@ -15,9 +15,13 @@ const app = express();
 // Apply security-related middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  origin: [
+    process.env.CLIENT_URL || "http://localhost:3000",
+    "https://task-manager-app-beta-one.vercel.app"
+  ],
   credentials: true,
 }));
+
 
 // Configure rate limiting for API routes
 const limiter = rateLimit({
