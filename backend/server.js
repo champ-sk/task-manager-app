@@ -18,7 +18,6 @@ const startServer = async () => {
   // Start the Express server
   const server = app.listen(PORT, () => {
     console.log(`TaskFlow API is running on port ${PORT}`);
-    console.log(`Swagger documentation available at http://localhost:${PORT}/api/docs`);
     console.log(`Environment: ${process.env.NODE_ENV}`);
   });
 
