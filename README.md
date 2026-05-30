@@ -83,12 +83,12 @@ Backend
 ### Mobile View
 ![Mobile View](docs/screenshots/mobile.png)
 
----
+## 📁 Project Structure
 
-## 📂 Project Structure
-TASKMANAGER26052026
+```
+TASKMANAGER/
 ├── backend/
-│   ├── config/          # DB connection
+│   ├── config/          # DB connection, Swagger config
 │   ├── controllers/     # auth, task, user controllers
 │   ├── middleware/      # auth guard, error handler, validator
 │   ├── models/          # User, Task Mongoose schemas
@@ -106,10 +106,18 @@ TASKMANAGER26052026
 │       ├── hooks/       # useTasks, useForm custom hooks
 │       ├── pages/       # Dashboard, Tasks, Login, Register, Profile
 │       └── utils/       # Date formatting helpers
-|
+├── docs/
+│   └── screenshots/
+│       ├── login.png
+│       ├── register.png
+│       ├── dashboard.png
+│       ├── tasks.png
+│       ├── create-task.png
+│       ├── profile.png
+│       ├── light-mode.png
+│       └── mobile.png
 └── README.md
-
----
+```
 
 ## ⚙️ Installation & Setup
 1. Clone the repository:
