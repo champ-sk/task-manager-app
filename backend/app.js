@@ -12,18 +12,38 @@ const userRoutes = require("./routes/user.routes");
 
 const app = express();
 
-// Apply security-related middleware
-app.use(helmet());
-app.use(cors({
-  origin: [
-    process.env.CLIENT_URL || "http://localhost:3000",
-    "https://task-manager-app-beta-one.vercel.app"
-  ],
+// Allowed origins list
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://task-manager-app-beta-one.vercel.app",
+  process.env.CLIENT_URL,
+].filter(Boolean); // removes undefined if CLIENT_URL is not set
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // allow requests with no origin (Postman, curl, mobile apps)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS blocked: ${origin}`));
+    }
+  },
   credentials: true,
-}));
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
+// Handle preflight requests for ALL routes — must be before everything else
+app.options("*", cors(corsOptions));
 
-// Configure rate limiting for API routes
+// Apply CORS to all routes
+app.use(cors(corsOptions));
+
+// Security headers
+app.use(helmet());
+
+// Rate limiting
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
   max: parseInt(process.env.RATE_LIMIT_MAX) || 100,
@@ -33,16 +53,16 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 
-// Parse incoming request bodies
+// Parse request bodies
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// Enable request logging in development mode
+// Request logging (dev only)
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// Health check endpoint
+// Health check
 app.get("/health", (req, res) => {
   res.status(200).json({
     success: true,
@@ -52,14 +72,12 @@ app.get("/health", (req, res) => {
   });
 });
 
-
-
-// Register application routes
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
 
-// Handle 404 and other errors
+// Error handling
 app.use(notFound);
 app.use(errorHandler);
 
