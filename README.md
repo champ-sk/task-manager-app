@@ -61,6 +61,30 @@ Backend
 
 ---
 
+## 📸 Screenshots
+
+### Login & Register
+![Login Page](docs/screenshots/login.png)
+![Register Page](docs/screenshots/register.png)
+
+### Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Task Management
+![My Tasks](docs/screenshots/tasks.png)
+![Create Task](docs/screenshots/create-task.png)
+
+### Profile
+![Profile Page](docs/screenshots/profile.png)
+
+### Light Mode
+![Light Mode](docs/screenshots/light-mode.png)
+
+### Mobile View
+![Mobile View](docs/screenshots/mobile.png)
+
+---
+
 ## 📂 Project Structure
 TASKMANAGER26052026
 ├── backend/
