@@ -36,6 +36,7 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete }) {
       }}
     >
       <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+
         {/* Checkbox */}
         <button
           onClick={() => onToggle(task._id)}
@@ -72,6 +73,8 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete }) {
 
         {/* Content */}
         <div style={{ flex: 1, minWidth: 0 }}>
+
+          {/* ── Row 1: Title + Badges ── */}
           <div
             style={{
               display: "flex",
@@ -98,8 +101,65 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete }) {
             </h3>
             <Badge type={task.priority} />
             <Badge type={task.status} />
+
+            {/* NEW — Category badge */}
+            {task.category && (
+              <span
+                style={{
+                  fontSize: 11,
+                  padding: "2px 8px",
+                  background: "var(--accent-soft)",
+                  color: "var(--accent)",
+                  borderRadius: 999,
+                  fontWeight: 500,
+                }}
+              >
+                {task.category}
+              </span>
+            )}
           </div>
 
+          {/* ── Row 2: Amount + Payment Method ── */}
+          {task.amount > 0 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                marginBottom: 8,
+                flexWrap: "wrap",
+              }}
+            >
+              {/* Amount */}
+              <span
+                style={{
+                  fontSize: 16,
+                  fontWeight: 700,
+                  color: "var(--accent)",
+                  letterSpacing: "-0.3px",
+                }}
+              >
+                ₹{task.amount.toLocaleString()}
+              </span>
+
+              {/* Payment Method */}
+              {task.paymentMethod && (
+                <span
+                  style={{
+                    fontSize: 12,
+                    color: "var(--text-muted)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                  }}
+                >
+                  💳 {task.paymentMethod}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* ── Row 3: Description / Notes ── */}
           {task.description && (
             <p
               style={{
@@ -115,6 +175,23 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete }) {
             </p>
           )}
 
+          {/* notes field (expense notes) */}
+          {task.notes && !task.description && (
+            <p
+              style={{
+                fontSize: 13,
+                color: "var(--text-secondary)",
+                marginBottom: 10,
+                lineHeight: 1.5,
+              }}
+            >
+              {task.notes.length > 120
+                ? task.notes.slice(0, 120) + "..."
+                : task.notes}
+            </p>
+          )}
+
+          {/* ── Row 4: Dates + Tags ── */}
           <div
             style={{
               display: "flex",
@@ -123,6 +200,7 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete }) {
               flexWrap: "wrap",
             }}
           >
+            {/* Due date (task) */}
             {task.dueDate && (
               <span
                 style={{
@@ -138,6 +216,23 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete }) {
                 {formatDate(task.dueDate)}
               </span>
             )}
+
+            {/* NEW — Expense date */}
+            {task.expenseDate && !task.dueDate && (
+              <span
+                style={{
+                  fontSize: 12,
+                  color: "var(--text-muted)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                }}
+              >
+                🗓️ {formatDate(task.expenseDate)}
+              </span>
+            )}
+
+            {/* Tags */}
             {task.tags?.length > 0 && (
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                 {task.tags.slice(0, 3).map((tag) => (
@@ -211,6 +306,7 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete }) {
             </svg>
           </Button>
         </div>
+
       </div>
     </div>
   );
