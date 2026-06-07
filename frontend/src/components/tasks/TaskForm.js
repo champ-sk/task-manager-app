@@ -21,17 +21,15 @@ const validate = (values) => {
 
 export default function TaskForm({ initialValues, onSubmit, onCancel, loading }) {
   const [values, setValues] = React.useState({
-    title: "",
-    description: "",
-    priority: "medium",
-    dueDate: "",
-    tags: "",
-    ...initialValues,
-    tags: Array.isArray(initialValues?.tags)
-      ? initialValues.tags.join(", ")
-      : initialValues?.tags || "",
-    dueDate: initialValues?.dueDate ? initialValues.dueDate.split("T")[0] : "",
-  });
+  title: "", description: "", priority: "medium", 
+  dueDate: "", tags: "",
+  amount: "",           // ADD
+  category: "Work",     // ADD
+  paymentMethod: "Cash", // ADD
+  notes: "",            // ADD
+  expenseDate: "",      // ADD
+  ...initialValues,
+});
 
   const [errors, setErrors] = React.useState({});
 
@@ -112,6 +110,61 @@ export default function TaskForm({ initialValues, onSubmit, onCancel, loading })
         />
       </div>
 
+        {/* Amount */}
+        <Input
+        label="Amount (₹)"
+        name="amount"
+        type="number"
+        min="0"
+        value={values.amount}
+        onChange={handleChange}
+        placeholder="0.00"
+        />
+
+        {/* Category + Payment Method side by side */}
+        <div style={{ display: "flex", gap: 16 }} className="form-row">
+        <Select
+            label="Category"
+            name="category"
+            value={values.category}
+            onChange={handleChange}
+            options={[
+            { value: "Work",          label: "💼 Work" },
+            { value: "Personal",      label: "👤 Personal" },
+            { value: "Food",          label: "🍔 Food" },
+            { value: "Travel",        label: "✈️ Travel" },
+            { value: "Bills",         label: "📄 Bills" },
+            { value: "Shopping",      label: "🛍️ Shopping" },
+            { value: "Health",        label: "🏥 Health" },
+            { value: "Education",     label: "📚 Education" },
+            { value: "Entertainment", label: "🎬 Entertainment" },
+            { value: "Other",         label: "📦 Other" },
+            ]}
+        />
+        <Select
+            label="Payment Method"
+            name="paymentMethod"
+            value={values.paymentMethod}
+            onChange={handleChange}
+            options={[
+            { value: "Cash",         label: "💵 Cash" },
+            { value: "UPI",          label: "📱 UPI" },
+            { value: "Credit Card",  label: "💳 Credit Card" },
+            { value: "Debit Card",   label: "🏧 Debit Card" },
+            { value: "Net Banking",  label: "🏦 Net Banking" },
+            { value: "Other",        label: "📦 Other" },
+            ]}
+        />
+        </div>
+
+        {/* Expense Date */}
+        <Input
+        label="Expense Date"
+        name="expenseDate"
+        type="date"
+        value={values.expenseDate}
+        onChange={handleChange}
+        />
       {/* Priority + Due Date */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
         <Select
