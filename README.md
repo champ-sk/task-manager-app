@@ -1,5 +1,9 @@
-# TaskFlow API
-A production‑grade full‑stack Task Management Web Application built with React.js, Node.js + Express, and MongoDB Atlas. Features JWT authentication, real‑time filters, pagination, dark/light mode, Docker support, and secure deployment on Render + Vercel.
+# TaskFlow — Task & Expense Manager
+
+A production-grade full-stack **Task & Expense Management Web Application** 
+built with **React.js**, **Node.js + Express**, and **MongoDB Atlas**. 
+Features JWT authentication, expense tracking with charts, real-time filters, 
+pagination, dark/light mode, and secure deployment on Render + Vercel.
 
 ✨ Features
 Frontend
@@ -19,6 +23,14 @@ Frontend
 
 ⚡ Optimistic UX with React Query caching
 
+💰 Expense tracking with amount, category, and payment method
+
+📊 Pie chart — spending breakdown by category
+
+📈 Line chart — monthly expense trend (last 6 months)
+
+🗓️ Expense date tracking per task
+
 Backend
 🔑 JWT access + refresh token authentication
 
@@ -35,6 +47,50 @@ Backend
 ✅ Input validation with express‑validator
 
 🧪 Unit tests with Jest + Supertest
+
+## 🛠️ Tech Stack
+```
+| Layer      | Technology                                        |
+|------------|---------------------------------------------------|
+| Frontend   | React 18, React Router v6, React Query v5, Axios  |
+| Backend    | Node.js, Express.js                               |
+| Database   | MongoDB + Mongoose (Atlas)                        |
+| Auth       | JWT (access + refresh tokens)                     |
+| Charts     | Recharts                                          |
+| Styling    | Pure CSS with CSS variables                       |
+| Testing    | Jest, Supertest                                   |
+| Deployment | Render (backend), Vercel (frontend)               |
+```
+
+## 📡 API Reference
+```
+### Auth Endpoints
+| Method | Route                    | Auth | Description          |
+|--------|--------------------------|------|----------------------|
+| POST   | /api/auth/register       | No   | Register new user    |
+| POST   | /api/auth/login          | No   | Login, get tokens    |
+| GET    | /api/auth/me             | Yes  | Get current user     |
+| POST   | /api/auth/refresh-token  | No   | Refresh access token |
+| POST   | /api/auth/logout         | Yes  | Logout               |
+
+### Task Endpoints
+| Method | Route                    | Auth | Description                      |
+|--------|--------------------------|------|----------------------------------|
+| GET    | /api/tasks               | Yes  | List tasks (filter/sort/paginate)|
+| POST   | /api/tasks               | Yes  | Create task                      |
+| GET    | /api/tasks/stats         | Yes  | Get task + expense statistics    |
+| GET    | /api/tasks/:id           | Yes  | Get single task                  |
+| PUT    | /api/tasks/:id           | Yes  | Update task                      |
+| PATCH  | /api/tasks/:id/toggle    | Yes  | Toggle pending ↔ completed       |
+| DELETE | /api/tasks/:id           | Yes  | Delete task                      |
+
+### User Endpoints
+| Method | Route                       | Auth  | Description        |
+|--------|-----------------------------|-------|--------------------|
+| PUT    | /api/users/profile          | Yes   | Update profile     |
+| PUT    | /api/users/change-password  | Yes   | Change password    |
+| GET    | /api/users                  | Admin | List all users     |
+```
 
 ## 🚀 Features Implemented
 - Express server setup with middleware (Helmet, CORS, Morgan, Rate Limiting).
@@ -83,6 +139,13 @@ Backend
 ### Mobile View
 ![Mobile View](docs/screenshots/mobile.png)
 
+### Charts view
+![Charts](docs/screenshots/charts.png)
+
+### Task with Amount
+![Task with Amount](docs/screenshots/task-with-amount.png)
+
+
 ## 📁 Project Structure
 
 ```
@@ -128,12 +191,20 @@ TASKMANAGER/
 3. Create a .env file in the root with:
    PORT=5000
    NODE_ENV=development
-   MONGO_URI=mongodb://localhost:27017/taskflow(used the live one here)
+   MONGO_URI=mongodb://localhost:27017/taskflow
    CLIENT_URL=http://localhost:3000
    RATE_LIMIT_WINDOW_MS=900000
    RATE_LIMIT_MAX=100
 
 4. Run the server:
    node server.js
+
+
+## 🌐 Live Demo
+
+| Service  | URL                                                    |
+|----------|--------------------------------------------------------|
+| Frontend | https://task-manager-app-beta-one.vercel.app           |
+| Backend  | https://task-manager-app-sxmh.onrender.com             | 
    
 
