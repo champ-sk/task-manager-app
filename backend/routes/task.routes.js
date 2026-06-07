@@ -43,7 +43,16 @@ router.post(
     body("priority").optional().isIn(["low", "medium", "high"]),
     body("dueDate").optional({ nullable: true }).isISO8601().withMessage("Invalid date format"),
     body("tags").optional().isArray(),
-  ],
+    body("amount").optional().isFloat({ min: 0 }).withMessage("Invalid amount"),
+    body("category").optional().isIn([
+    "Food","Travel","Bills","Shopping","Health",
+    "Education","Entertainment","Other","Work","Personal"
+    ]).withMessage("Invalid category"),
+    body("paymentMethod").optional().isIn([
+    "Cash","Credit Card","Debit Card","UPI","Net Banking","Other"
+    ]).withMessage("Invalid payment method"),
+    body("expenseDate").optional().isISO8601().withMessage("Invalid date"),
+ ],
   validate,
   createTask
 );
@@ -59,7 +68,16 @@ router.put(
     body("status").optional().isIn(["pending", "completed"]),
     body("priority").optional().isIn(["low", "medium", "high"]),
     body("dueDate").optional({ nullable: true }).isISO8601(),
-    body("tags").optional().isArray(),
+    body("tags").optional().isArray(),      
+    body("amount").optional().isFloat({ min: 0 }).withMessage("Invalid amount"),
+    body("category").optional().isIn([
+    "Food","Travel","Bills","Shopping","Health",
+    "Education","Entertainment","Other","Work","Personal"
+    ]).withMessage("Invalid category"),
+    body("paymentMethod").optional().isIn([
+    "Cash","Credit Card","Debit Card","UPI","Net Banking","Other"
+    ]).withMessage("Invalid payment method"),
+    body("expenseDate").optional().isISO8601().withMessage("Invalid date"),
   ],
   validate,
   updateTask
