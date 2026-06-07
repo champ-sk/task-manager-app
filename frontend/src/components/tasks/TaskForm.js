@@ -40,23 +40,28 @@ export default function TaskForm({ initialValues, onSubmit, onCancel, loading })
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const errs = validate(values);
-    if (Object.keys(errs).length) {
-      setErrors(errs);
-      return;
-    }
-    const payload = {
-      title: values.title.trim(),
-      description: values.description.trim(),
-      priority: values.priority,
-      dueDate: values.dueDate || null,
-      tags: values.tags
-        ? values.tags.split(",").map((t) => t.trim()).filter(Boolean)
-        : [],
-    };
-    onSubmit(payload);
+  e.preventDefault();
+  const errs = validate(values);
+  if (Object.keys(errs).length) { setErrors(errs); return; }
+
+  const payload = {
+    title: values.title.trim(),
+    description: values.description.trim(),
+    priority: values.priority,
+    dueDate: values.dueDate || null,
+    tags: values.tags
+      ? values.tags.split(",").map((t) => t.trim()).filter(Boolean)
+      : [],
+    // ── expense fields ──
+    amount: values.amount ? parseFloat(values.amount) : 0, 
+    category: values.category,
+    paymentMethod: values.paymentMethod,
+    notes: values.notes ? values.notes.trim() : "",
+    expenseDate: values.expenseDate || null,
   };
+
+  onSubmit(payload);
+};
 
   return (
     <form
