@@ -44,6 +44,36 @@ const taskSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
+    
+    amount: {
+    type: Number,
+    default: 0,
+    min: [0, "Amount cannot be negative"],
+    },
+
+    category: {
+    type: String,
+    enum: ["Food", "Travel", "Bills", "Shopping", 
+            "Health", "Education", "Entertainment", "Other", "Work", "Personal"],
+    default: "Work",
+    },
+
+    paymentMethod: {
+    type: String,
+    enum: ["Cash", "Credit Card", "Debit Card", "UPI", "Net Banking", "Other"],
+    default: "Cash",
+    },
+
+    notes: {
+    type: String,
+    maxlength: [500, "Notes too long"],
+    default: "",
+    },
+
+expenseDate: {
+  type: Date,
+  default: Date.now,
+},
   },
   {
     timestamps: true,
