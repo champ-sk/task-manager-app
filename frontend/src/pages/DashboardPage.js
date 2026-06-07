@@ -10,6 +10,18 @@ import {
 import Badge from "../components/ui/Badge";
 import Button from "../components/ui/Button";
 import { formatDate } from "../utils/date";
+import {
+  PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer,
+  LineChart, Line, XAxis, YAxis, CartesianGrid,
+} from "recharts";
+
+const CHART_COLORS = [
+  "#6366f1","#22c55e","#f59e0b","#ef4444",
+  "#8b5cf6","#06b6d4","#f97316","#64748b"
+];
+
+const MONTHS = ["","Jan","Feb","Mar","Apr","May",
+                "Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 // Stat card component
 const StatCard = ({ label, value, icon, color, sub }) => (
@@ -184,6 +196,19 @@ export default function DashboardPage() {
             />
             <StatCard label="Pending" value={stats?.pending ?? 0} icon="⏳" color="#f59e0b" />
             <StatCard label="High Priority" value={stats?.high ?? 0} icon="🔴" color="#ef4444" />
+            {/* ADD these two new stat cards */}
+            <StatCard
+            label="Total Spent"
+            value={`₹${(stats?.totalAmount || 0).toLocaleString()}`}
+            icon="💰"
+            color="#6366f1"
+            />
+            <StatCard
+            label="This Month"
+            value={`₹${(stats?.monthlyAmount || 0).toLocaleString()}`}
+            icon="📅"
+            color="#22c55e"
+            />
           </>
         )}
       </div>
@@ -293,33 +318,93 @@ export default function DashboardPage() {
         </div>
 
         {/* Priority breakdown */}
-        <div style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: "var(--radius)", padding: 24 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 600, color: "var(--text-primary)", marginBottom: 20 }}>Priority Breakdown</h2>
-          {statsLoading ? (
-            [1,2,3].map(i => <div key={i} className="skeleton" style={{ height: 36, marginBottom: 16 }} />)
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <PriorityBar label="High Priority" count={stats?.high ?? 0} total={stats?.total ?? 0} color="var(--danger)" />
-              <PriorityBar label="Medium Priority" count={stats?.medium ?? 0} total={stats?.total ?? 0} color="var(--warning)" />
-              <PriorityBar label="Low Priority" count={stats?.low ?? 0} total={stats?.total ?? 0} color="var(--success)" />
-            </div>
-          )}
+        {/* RIGHT COLUMN — replace priority breakdown with charts */}
+<div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
 
-          {/* Completion ring */}
-          {!statsLoading && stats && (
-            <div style={{ marginTop: 24, textAlign: "center" }}>
-              <svg width="100" height="100" viewBox="0 0 100 100" style={{ margin: "0 auto", display: "block" }}>
-                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--border)" strokeWidth="8" />
-                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--accent)" strokeWidth="8"
-                  strokeDasharray={`${2 * Math.PI * 40}`}
-                  strokeDashoffset={`${2 * Math.PI * 40 * (1 - (stats.completionRate || 0) / 100)}`}
-                  strokeLinecap="round" transform="rotate(-90 50 50)" style={{ transition: "stroke-dashoffset 0.8s ease" }} />
-                <text x="50" y="50" textAnchor="middle" dominantBaseline="middle" fill="var(--text-primary)" fontSize="18" fontWeight="700" fontFamily="DM Sans">{stats.completionRate}%</text>
-              </svg>
-              <p style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>Completion Rate</p>
-            </div>
-          )}
-        </div>
+  {/* Pie Chart */}
+  <div style={{
+    background: "var(--bg-card)", border: "1px solid var(--border)",
+    borderRadius: "var(--radius)", padding: 24,
+  }}>
+    <h2 style={{ fontSize: 16, fontWeight: 600, 
+                 color: "var(--text-primary)", marginBottom: 16 }}>
+      Spending by Category
+    </h2>
+    {stats?.byCategory?.length > 0 ? (
+      <ResponsiveContainer width="100%" height={220}>
+        <PieChart>
+          <Pie
+            data={stats.byCategory}
+            dataKey="total"
+            nameKey="_id"
+            cx="50%" cy="50%"
+            outerRadius={80}
+            label={({ _id, percent }) =>
+              `${_id} ${(percent * 100).toFixed(0)}%`
+            }
+          >
+            {stats.byCategory.map((_, i) => (
+              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip formatter={(val) => `₹${val.toLocaleString()}`} />
+        </PieChart>
+      </ResponsiveContainer>
+    ) : (
+      <p style={{ color: "var(--text-muted)", fontSize: 13, 
+                  textAlign: "center", padding: "40px 0" }}>
+        No expense data yet
+      </p>
+    )}
+  </div>
+
+  {/* Line Chart */}
+  <div style={{
+    background: "var(--bg-card)", border: "1px solid var(--border)",
+    borderRadius: "var(--radius)", padding: 24,
+  }}>
+    <h2 style={{ fontSize: 16, fontWeight: 600, 
+                 color: "var(--text-primary)", marginBottom: 16 }}>
+      Monthly Trend
+    </h2>
+    {stats?.byMonth?.length > 0 ? (
+      <ResponsiveContainer width="100%" height={220}>
+        <LineChart data={stats.byMonth}>
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+          <XAxis
+            dataKey="_id.month"
+            tickFormatter={(m) => MONTHS[m]}
+            tick={{ fill: "var(--text-muted)", fontSize: 12 }}
+          />
+          <YAxis
+            tickFormatter={(v) => `₹${v}`}
+            tick={{ fill: "var(--text-muted)", fontSize: 12 }}
+          />
+          <Tooltip
+            formatter={(val) => [`₹${val.toLocaleString()}`, "Spent"]}
+            contentStyle={{
+              background: "var(--bg-card)",
+              border: "1px solid var(--border)",
+              borderRadius: 8,
+            }}
+          />
+          <Line
+            type="monotone" dataKey="total"
+            stroke="#6366f1" strokeWidth={2}
+            dot={{ r: 4, fill: "#6366f1" }}
+            activeDot={{ r: 6 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    ) : (
+      <p style={{ color: "var(--text-muted)", fontSize: 13, 
+                  textAlign: "center", padding: "40px 0" }}>
+        No trend data yet
+      </p>
+    )}
+  </div>
+
+</div>
       </div>
     </div>
   );
